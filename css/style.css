@@ -49,3 +49,25 @@ main { flex: 1; }
   .product-grid, .about-content { padding: 1rem; }
   .section-title, .page-intro { padding: 1.5rem 1rem 0; }
 }
+
+/* Lab 2 — Catalogue controls */
+.catalogue-controls { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 0; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+#search-box { flex: 1 1 260px; padding: 0.6rem 0.8rem; border: 1px solid #bbb; border-radius: 6px; font-size: 1rem; }
+#sort-select { padding: 0.6rem; border: 1px solid #bbb; border-radius: 6px; font-size: 0.95rem; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.category-btn { background: #fff; color: #1f3864; border: 1px solid #1f3864; padding: 0.45rem 0.9rem; border-radius: 20px; cursor: pointer; }
+.category-btn.active, .category-btn:hover { background: #1f3864; color: #fff; }
+#result-count { width: 100%; font-size: 0.9rem; color: #555; }
+.no-results { grid-column: 1 / -1; text-align: center; color: #555; padding: 2rem; }
+
+/* Lab 2 — Stock indicators */
+.stock { font-size: 0.85rem; font-weight: bold; }
+.stock.in { color: #2e7d32; }
+.stock.low { color: #e65100; }
+.stock.out { color: #c62828; }
+.product button:disabled { background: #aaa; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .catalogue-controls { padding: 1rem 1rem 0; }
+  #sort-select { width: 100%; }
+}
