@@ -1,26 +1,28 @@
 // ShopNow — app.js
 // Lab 2: JavaScript and Dynamic Product Catalogue
+// Lab 4: Products now load live from the Supabase database
 
-// Part A — Products stored as data (array of objects)
-const products = [
-  { id: 1,  name: "Dell Business Laptop",     category: "Computers",   price: 3499, stock: 10, image: "images/laptop.svg" },
-  { id: 2,  name: "HP Student Laptop",        category: "Computers",   price: 2299, stock: 4,  image: "images/laptop.svg" },
-  { id: 3,  name: "MacBook Air 13-inch",      category: "Computers",   price: 4299, stock: 0,  image: "images/laptop.svg" },
-  { id: 4,  name: "Lenovo Gaming Laptop",     category: "Computers",   price: 5199, stock: 7,  image: "images/laptop.svg" },
-  { id: 5,  name: "Samsung Galaxy S24",       category: "Phones",      price: 3199, stock: 12, image: "images/phone.svg" },
-  { id: 6,  name: "iPhone 15",                category: "Phones",      price: 3399, stock: 3,  image: "images/phone.svg" },
-  { id: 7,  name: "Google Pixel 8",           category: "Phones",      price: 2499, stock: 0,  image: "images/phone.svg" },
-  { id: 8,  name: "Xiaomi Redmi Note 13",     category: "Phones",      price: 899,  stock: 20, image: "images/phone.svg" },
-  { id: 9,  name: "Wireless Headphones",      category: "Audio",       price: 449,  stock: 15, image: "images/headphones.svg" },
-  { id: 10, name: "Noise Cancelling Earbuds", category: "Audio",       price: 699,  stock: 2,  image: "images/headphones.svg" },
-  { id: 11, name: "Bluetooth Speaker",        category: "Audio",       price: 279,  stock: 9,  image: "images/speaker.svg" },
-  { id: 12, name: "Smart Home Speaker",       category: "Audio",       price: 399,  stock: 0,  image: "images/speaker.svg" },
-  { id: 13, name: "Mechanical Keyboard",      category: "Accessories", price: 329,  stock: 18, image: "images/keyboard.svg" },
-  { id: 14, name: "Wireless Mouse",           category: "Accessories", price: 129,  stock: 25, image: "images/keyboard.svg" },
-  { id: 15, name: "USB-C Charging Cable",     category: "Accessories", price: 49,   stock: 5,  image: "images/keyboard.svg" },
-  { id: 16, name: "Smart Watch",              category: "Wearables",   price: 899,  stock: 6,  image: "images/smartwatch.svg" },
-  { id: 17, name: "Fitness Band",             category: "Wearables",   price: 199,  stock: 1,  image: "images/smartwatch.svg" },
-];
+// Lab 4, Step 2 — Create the Supabase client
+// (the anon public key is meant to be visible; security comes from RLS policies)
+const SUPABASE_URL = "https://azvheolbnkwdzdjqmiqn.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6dmhlb2xibmt3ZHpkanFtaXFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyMjQyMzQsImV4cCI6MjEwNzgwMDIzNH0.0DzriW1-w53GjrwuI6WN24zMP6xFth1Hjh4ZIFKklmc";
+// Named supabaseClient because the CDN library already uses the global name "supabase"
+// (only pages that load the Supabase CDN script, e.g. products.html, create a client)
+const supabaseClient = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+// Product images, chosen by category (the database stores no image column)
+const categoryImages = {
+  Computers: "images/laptop.svg",
+  Phones: "images/phone.svg",
+  Audio: "images/headphones.svg",
+  Accessories: "images/keyboard.svg",
+  Wearables: "images/smartwatch.svg",
+};
+
+// Filled from the database by loadProducts() (replaces the Lab 2 hard-coded array)
+let products = [];
 
 // Part B — Render product cards from the data
 function renderProducts(list) {
@@ -44,9 +46,36 @@ function renderProducts(list) {
         <h3>${prod.name}</h3>
         <p class="price">AED ${prod.price.toLocaleString()}</p>
         <p class="stock ${stockClass}">${stockLabel}</p>
+        <a class="details-link" href="product-detail.html?id=${prod.id}">View details</a>
         <button ${prod.stock === 0 ? "disabled" : ""}>Add to Cart</button>
       </div>`;
   });
+}
+
+// Lab 4, Step 4 — Fetch products from the database
+async function loadProducts() {
+  const { data, error } = await supabaseClient
+    .from("product")
+    .select("*, category(category_name)")
+    .order("name");
+
+  if (error) {
+    document.getElementById("product-list").innerHTML =
+      `<p class="no-results">Could not load products: ${error.message}</p>`;
+    return;
+  }
+
+  // Convert database rows into the shape renderProducts() already expects
+  products = data.map(row => ({
+    id: row.product_id,
+    name: row.name,
+    category: row.category ? row.category.category_name : "Other",
+    price: Number(row.price),
+    stock: row.stock,
+    image: categoryImages[row.category?.category_name] || "images/laptop.svg",
+  }));
+
+  applyFilters();
 }
 
 // Part C + Challenge — search, category filter and sort applied together
@@ -97,5 +126,5 @@ if (document.getElementById("product-list")) {
     applyFilters();
   });
 
-  applyFilters();
+  loadProducts(); // replaces the Lab 2 applyFilters() call on the hard-coded array
 }
