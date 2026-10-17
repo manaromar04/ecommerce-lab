@@ -1,0 +1,51 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; color: #222; background: #fafafa; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1; }
+
+/* Header and navigation */
+.site-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #1f3864; color: #fff; }
+.logo { font-size: 1.6rem; }
+.main-nav a { color: #fff; margin-left: 1.5rem; text-decoration: none; }
+.main-nav a:hover, .main-nav a.active { text-decoration: underline; }
+
+/* Hero */
+.hero { background: #dbe5f1; padding: 3rem 2rem; text-align: center; }
+.hero h2 { font-size: 2rem; color: #1f3864; margin-bottom: 0.5rem; }
+.hero p { margin-bottom: 1.25rem; }
+.btn { display: inline-block; background: #1f3864; color: #fff; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; }
+
+/* Page titles */
+.section-title, .page-intro { max-width: 1100px; margin: 0 auto; }
+.section-title { padding: 2rem 2rem 0; color: #1f3864; }
+.page-intro { padding: 2rem 2rem 0; }
+.page-intro h2 { color: #1f3864; }
+
+/* Product grid */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+.product { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-align: center; display: flex; flex-direction: column; gap: 0.4rem; }
+.product img { width: 100%; height: auto; aspect-ratio: 10 / 7; border-radius: 4px; }
+.product .category { font-size: 0.8rem; color: #666; text-transform: uppercase; }
+.product .desc { font-size: 0.9rem; color: #555; }
+.product .price { font-weight: bold; color: #1f3864; }
+.product button { margin-top: auto; background: #1f3864; color: #fff; border: none; padding: 0.6rem; border-radius: 6px; cursor: pointer; }
+.product button:hover { background: #2e5597; }
+
+/* About page */
+.about-content { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; padding: 2rem; }
+.about-content article { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1.25rem; }
+.about-content h3 { color: #1f3864; margin-bottom: 0.5rem; }
+.about-content ul { padding-left: 1.2rem; }
+
+/* Footer */
+.site-footer { background: #1f3864; color: #fff; text-align: center; padding: 1rem; margin-top: 2rem; }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .site-header { flex-direction: column; align-items: flex-start; padding: 1rem; }
+  .main-nav { margin-top: 0.5rem; }
+  .main-nav a { margin-left: 0; margin-right: 1rem; }
+  .hero { padding: 2rem 1rem; }
+  .hero h2 { font-size: 1.5rem; }
+  .product-grid, .about-content { padding: 1rem; }
+  .section-title, .page-intro { padding: 1.5rem 1rem 0; }
+}
