@@ -1,0 +1,61 @@
+digraph ERD {
+  graph [rankdir=LR, splines=polyline, nodesep=0.6, ranksep=1.1, bgcolor="white", pad=0.3, fontname="Helvetica"];
+  node  [shape=plain, fontname="Helvetica", fontsize=12];
+  edge  [color="#1F3864", penwidth=1.6, fontname="Helvetica", fontsize=10, fontcolor="#1F3864"];
+
+  customer [label=<
+  <table border="1" cellborder="0" cellspacing="0" cellpadding="6" color="#1F3864">
+    <tr><td bgcolor="#1F3864" colspan="2"><font color="white"><b>CUSTOMER</b></font></td></tr>
+    <tr><td align="left"><b>customer_id</b></td><td align="left"><font color="#C00000">PK</font></td></tr>
+    <tr><td align="left">name</td><td></td></tr>
+    <tr><td align="left">email</td><td align="left"><font color="#555555">UNIQUE</font></td></tr>
+    <tr><td align="left">created_at</td><td></td></tr>
+  </table>>];
+
+  order [label=<
+  <table border="1" cellborder="0" cellspacing="0" cellpadding="6" color="#1F3864">
+    <tr><td bgcolor="#1F3864" colspan="2"><font color="white"><b>ORDER</b></font></td></tr>
+    <tr><td align="left"><b>order_id</b></td><td align="left"><font color="#C00000">PK</font></td></tr>
+    <tr><td align="left">customer_id</td><td align="left"><font color="#2E75B6">FK</font></td></tr>
+    <tr><td align="left">order_date</td><td></td></tr>
+    <tr><td align="left">status</td><td></td></tr>
+    <tr><td align="left">total</td><td></td></tr>
+  </table>>];
+
+  order_item [label=<
+  <table border="1" cellborder="0" cellspacing="0" cellpadding="6" color="#1F3864">
+    <tr><td bgcolor="#1F3864" colspan="2"><font color="white"><b>ORDER_ITEM</b></font></td></tr>
+    <tr><td align="left"><b>order_item_id</b></td><td align="left"><font color="#C00000">PK</font></td></tr>
+    <tr><td align="left">order_id</td><td align="left"><font color="#2E75B6">FK</font></td></tr>
+    <tr><td align="left">product_id</td><td align="left"><font color="#2E75B6">FK</font></td></tr>
+    <tr><td align="left">quantity</td><td></td></tr>
+    <tr><td align="left">price</td><td></td></tr>
+  </table>>];
+
+  product [label=<
+  <table border="1" cellborder="0" cellspacing="0" cellpadding="6" color="#1F3864">
+    <tr><td bgcolor="#1F3864" colspan="2"><font color="white"><b>PRODUCT</b></font></td></tr>
+    <tr><td align="left"><b>product_id</b></td><td align="left"><font color="#C00000">PK</font></td></tr>
+    <tr><td align="left">name</td><td></td></tr>
+    <tr><td align="left">description</td><td></td></tr>
+    <tr><td align="left">price</td><td></td></tr>
+    <tr><td align="left">stock</td><td></td></tr>
+    <tr><td align="left">category_id</td><td align="left"><font color="#2E75B6">FK</font></td></tr>
+  </table>>];
+
+  category [label=<
+  <table border="1" cellborder="0" cellspacing="0" cellpadding="6" color="#1F3864">
+    <tr><td bgcolor="#1F3864" colspan="2"><font color="white"><b>CATEGORY</b></font></td></tr>
+    <tr><td align="left"><b>category_id</b></td><td align="left"><font color="#C00000">PK</font></td></tr>
+    <tr><td align="left">category_name</td><td></td></tr>
+  </table>>];
+
+  // one (tee) to many (crow)
+  customer -> order      [dir=both, arrowtail=tee, arrowhead=crow, label="places"];
+  order    -> order_item [dir=both, arrowtail=tee, arrowhead=crow, label="contains"];
+  product  -> order_item [dir=both, arrowtail=tee, arrowhead=crow, label="appears in"];
+  category -> product    [dir=both, arrowtail=tee, arrowhead=crow, label="groups"];
+
+  {rank=same; customer; category;}
+  {rank=same; order; product;}
+}
