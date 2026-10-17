@@ -23,3 +23,4 @@ ecommerce-lab/
 
 ## Responsive design
 Tested at desktop (1366px), tablet (768px) and mobile (375px) widths. The product grid uses CSS Grid with `auto-fill`, so it shows three, two or one column depending on screen width, and the header stacks vertically on screens under 600px.
+Lab 1 completed in GitHub Codespaces.
