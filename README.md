@@ -26,3 +26,4 @@ Tested at desktop (1366px), tablet (768px) and mobile (375px) widths. The produc
 Lab 1 completed in GitHub Codespaces.
 Lab 2 completed: dynamic product catalogue.
 Lab 4 completed: storefront connected to Supabase.
+Lab 5 completed: cart and user accounts.
