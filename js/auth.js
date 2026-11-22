@@ -6,7 +6,10 @@ async function updateNavForAuth() {
   const navSlot = document.getElementById("auth-nav-slot");
   if (!navSlot) return;
   if (user) {
-    navSlot.innerHTML = `<span class="nav-user">Hi, ${user.email}</span> <a href="#" onclick="logout(); return false;">Log out</a>`;
+    // Lab 10 security fix: build the greeting with textContent, not innerHTML,
+    // so text from the account (the email) can never be run as HTML/JavaScript
+    navSlot.innerHTML = `<span class="nav-user"></span> <a href="#" onclick="logout(); return false;">Log out</a>`;
+    navSlot.querySelector(".nav-user").textContent = `Hi, ${user.email}`;
   } else {
     navSlot.innerHTML = `<a href="login.html">Login</a>`;
   }

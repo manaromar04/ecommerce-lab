@@ -1,5 +1,9 @@
 # ShopNow — E-Commerce Storefront
 
+**Live site:** https://manaromar04.github.io/ecommerce-lab/
+
+INT424 E-Commerce semester project (Labs 1–10): plain HTML/CSS/JavaScript storefront on GitHub Pages, with Supabase for the database, authentication and REST API.
+
 INT424 E-Commerce, Lab 1: Development Environment and E-Commerce Storefront.
 
 A responsive three-page storefront built with plain HTML and CSS.
