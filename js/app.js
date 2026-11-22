@@ -1,25 +1,9 @@
 // ShopNow — app.js
 // Lab 2: JavaScript and Dynamic Product Catalogue
 // Lab 4: Products now load live from the Supabase database
+// Lab 5: "Add to Cart" buttons now add products to the localStorage cart
 
-// Lab 4, Step 2 — Create the Supabase client
-// (the anon public key is meant to be visible; security comes from RLS policies)
-const SUPABASE_URL = "https://azvheolbnkwdzdjqmiqn.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6dmhlb2xibmt3ZHpkanFtaXFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyMjQyMzQsImV4cCI6MjEwNzgwMDIzNH0.0DzriW1-w53GjrwuI6WN24zMP6xFth1Hjh4ZIFKklmc";
-// Named supabaseClient because the CDN library already uses the global name "supabase"
-// (only pages that load the Supabase CDN script, e.g. products.html, create a client)
-const supabaseClient = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
-
-// Product images, chosen by category (the database stores no image column)
-const categoryImages = {
-  Computers: "images/laptop.svg",
-  Phones: "images/phone.svg",
-  Audio: "images/headphones.svg",
-  Accessories: "images/keyboard.svg",
-  Wearables: "images/smartwatch.svg",
-};
+// The Supabase client (supabaseClient) and categoryImages now live in js/supabase-client.js
 
 // Filled from the database by loadProducts() (replaces the Lab 2 hard-coded array)
 let products = [];
@@ -47,7 +31,7 @@ function renderProducts(list) {
         <p class="price">AED ${prod.price.toLocaleString()}</p>
         <p class="stock ${stockClass}">${stockLabel}</p>
         <a class="details-link" href="product-detail.html?id=${prod.id}">View details</a>
-        <button ${prod.stock === 0 ? "disabled" : ""}>Add to Cart</button>
+        <button class="add-to-cart" data-id="${prod.id}" ${prod.stock === 0 ? "disabled" : ""}>Add to Cart</button>
       </div>`;
   });
 }
@@ -118,6 +102,15 @@ if (document.getElementById("product-list")) {
       btn.classList.add("active");
       applyFilters();
     });
+  });
+
+  // Lab 5, Step 2 — Add to Cart: find the clicked product by its id and add it to the cart
+  document.getElementById("product-list").addEventListener("click", e => {
+    const button = e.target.closest(".add-to-cart");
+    if (!button) return;
+    const prod = products.find(p => p.id === Number(button.dataset.id));
+    addToCart({ product_id: prod.id, name: prod.name, price: prod.price, image: prod.image });
+    showToast(`${prod.name} added to cart`);
   });
 
   // Step 5 — Price sorting
