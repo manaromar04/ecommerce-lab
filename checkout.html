@@ -23,9 +23,24 @@
       <h2>Checkout</h2>
       <p id="checkout-user">Checking your login...</p>
     </section>
-    <section class="cart">
-      <div id="checkout-summary"></div>
-      <p class="note">Placing the order is added in Lab 6.</p>
+
+    <section class="checkout-layout">
+      <form id="checkout-form" class="checkout-form" novalidate>
+        <h3>Shipping information</h3>
+        <label for="name">Full name</label>
+        <input type="text" id="name">
+        <label for="address">Delivery address</label>
+        <textarea id="address" rows="3"></textarea>
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" placeholder="+971 50 123 4567">
+        <p class="note">Payment is simulated in this lab: placing the order works as if payment succeeded.</p>
+        <button type="submit" id="place-order" class="btn">Place Order</button>
+      </form>
+
+      <aside class="order-summary">
+        <h3>Order summary</h3>
+        <div id="checkout-summary"></div>
+      </aside>
     </section>
   </main>
 
